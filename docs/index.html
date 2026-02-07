@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>index.html</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        table-layout: fixed;
+
+        th,
+        td {
+          padding: 0.25rem;
+          text-align: left;
+
+          &:nth-child(-n + 3) {
+            width: 8rem;
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Path</th>
+          <th>Expected</th>
+          <th>Actual</th>
+          <th>Pass</th>
+          <th>Status</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="copy">📋</button>
+
+    <script>
+      const $table = document.querySelector("table");
+      const tests = [
+        { path: "/file", expected: "file.html" },
+        { path: "/file/", expected: "file.html" },
+        { path: "/file.html", expected: "file.html" },
+        { path: "/folder", expected: "folder/index.html" },
+        { path: "/folder/", expected: "folder/index.html" },
+        { path: "/folder/index.html", expected: "folder/index.html" },
+        { path: "/both", expected: "both.html" },
+        { path: "/both/", expected: "both/index.html" },
+        { path: "/both.html", expected: "both.html" },
+        { path: "/both/index.html", expected: "both/index.html" },
+        { path: "/group", expected: "group.html" },
+        { path: "/group/", expected: "group.html" },
+        { path: "/group.html", expected: "group.html" },
+      ];
+
+      async function report() {
+        const $tbody = $table.querySelector("tbody");
+        const $copy = document.querySelector("#copy");
+
+        for (const { path, expected } of tests) {
+          const { location, status, text } = await trace(path);
+          const $tr = document.createElement("tr");
+          for (const content of [
+            path,
+            expected,
+            text,
+            expected === text ? "✅" : "❌",
+            status,
+            location,
+          ]) {
+            $tr.appendChild(document.createElement("td")).textContent = content;
+          }
+          $tbody.appendChild($tr);
+        }
+
+        $copy.onclick = copyTable;
+      }
+
+      async function copyTable() {
+        const rows = ["|", "|"];
+        for (const $cell of $table.querySelector("thead tr").children) {
+          rows[0] += `${$cell.textContent}|`;
+          rows[1] += `---|`;
+        }
+        for (const $tr of $table.querySelectorAll("tbody tr")) {
+          const i = rows.push("|") - 1;
+          for (const $cell of $tr.children) {
+            rows[i] += `${$cell.textContent}|`;
+          }
+        }
+        await navigator.clipboard.writeText(rows.join("\n"));
+      };
+
+      let iframe;
+      async function trace(path) {
+        let url = new URL(path, window.location.origin).href;
+        let location = url;
+        let status = 0;
+        let text = "";
+
+        try {
+          const res = await fetch(url, {
+            redirect: "manual",
+            headers: {
+              Accept: "text/html,application/xhtml+xml",
+            },
+          });
+
+          status = res.status;
+
+          if (res.type === "opaqueredirect") {
+            status = "3xx";
+            await new Promise((resolve) => {
+              if (!iframe) {
+                iframe = document.createElement("iframe");
+                iframe.style.position = "absolute";
+                iframe.style.left = "-100%";
+              }
+
+              iframe.onload = () => {
+                try {
+                  const doc = iframe.contentDocument;
+                  if (doc) {
+                    location = doc.location.href;
+                    if (doc.body) {
+                      text = doc.body.textContent.trim();
+                    }
+                  }
+                } catch {
+                  /* :) */
+                }
+                iframe.onload = undefined;
+                iframe.src = "";
+                iframe.remove();
+                resolve();
+              };
+
+              iframe.src = url;
+              document.body.appendChild(iframe);
+            });
+          } else if (res.ok) {
+            const contentType = res.headers.get("Content-Type");
+            if (
+              contentType &&
+              contentType.toLowerCase().includes("text/html")
+            ) {
+              const doc = new DOMParser().parseFromString(
+                await res.text(),
+                "text/html",
+              );
+              if (doc.body) {
+                text = doc.body.textContent.trim();
+              }
+            }
+          }
+        } catch (err) {
+          console.error(err);
+          status = 0;
+        }
+
+        return { location, status, text };
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", report);
+      } else {
+        report();
+      }
+    </script>
+  </body>
+</html>

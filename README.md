@@ -1,0 +1,35 @@
+# Static Server Test
+
+## Description
+
+This project is a set of HTML pages which can be deployed to a static server (eg. GitHub Pages, etc.) to test how is serves files, folders and deals with trailing slashes.
+
+## How does it work?
+
+Deploy the `docs` folder to your favorite static site server and then navigate to the root path of your deployment where a script will generate a report. Below are reports for a few popular services.
+
+Additionally you can run this locally using your favorite static server. For example run `npx serve docs` and navigate to http://localhost:3000 to view the report.
+
+## Reports
+
+Below are reports from some populare static servers and services
+
+### `npx serve`
+
+No configuration
+
+|Path|Expected|Actual|Pass|Status|Location|
+|---|---|---|---|---|---|
+|/file|file.html|file.html|✅|200|http://localhost:3000/file|
+|/file/|file.html|file.html|✅|200|http://localhost:3000/file/|
+|/file.html|file.html|file.html|✅|3xx|http://localhost:3000/file|
+|/folder|folder/index.html|folder/index.html|✅|200|http://localhost:3000/folder|
+|/folder/|folder/index.html|folder/index.html|✅|200|http://localhost:3000/folder/|
+|/folder/index.html|folder/index.html|folder/index.html|✅|3xx|http://localhost:3000/folder|
+|/both|both.html|both/index.html|❌|200|http://localhost:3000/both|
+|/both/|both/index.html|both/index.html|✅|200|http://localhost:3000/both/|
+|/both.html|both.html|both/index.html|❌|3xx|http://localhost:3000/both|
+|/both/index.html|both/index.html|both/index.html|✅|3xx|http://localhost:3000/both|
+|/group|group.html|group.html|✅|200|http://localhost:3000/group|
+|/group/|group.html|group.html|✅|200|http://localhost:3000/group/|
+|/group.html|group.html|group.html|✅|3xx|http://localhost:3000/group|
