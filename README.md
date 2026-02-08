@@ -54,3 +54,23 @@ https://static-server-test.github.io/
 |/group|group.html|group.html|✅|200|https://static-server-test.github.io/group|
 |/group/|group.html||❌|404|https://static-server-test.github.io/group/|
 |/group.html|group.html|group.html|✅|200|https://static-server-test.github.io/group.html|
+
+### Cloudflare Pages
+
+https://static-server-test.rturnq.workers.dev/
+
+|Path|Expected|Actual|Pass|Status|Location|
+|---|---|---|---|---|---|
+|/file|file.html|file.html|✅|200|https://static-server-test.rturnq.workers.dev/file|
+|/file/|file.html|file.html|✅|➡️|https://static-server-test.rturnq.workers.dev/file|
+|/file.html|file.html|file.html|✅|➡️|https://static-server-test.rturnq.workers.dev/file|
+|/folder|folder/index.html|folder/index.html|✅|➡️|https://static-server-test.rturnq.workers.dev/folder/|
+|/folder/|folder/index.html|folder/index.html|✅|200|https://static-server-test.rturnq.workers.dev/folder/|
+|/folder/index.html|folder/index.html|folder/index.html|✅|➡️|https://static-server-test.rturnq.workers.dev/folder/|
+|/both|both.html|both.html|✅|200|https://static-server-test.rturnq.workers.dev/both|
+|/both/|both/index.html|both/index.html|✅|200|https://static-server-test.rturnq.workers.dev/both/|
+|/both.html|both.html|both.html|✅|➡️|https://static-server-test.rturnq.workers.dev/both|
+|/both/index.html|both/index.html|both/index.html|✅|➡️|https://static-server-test.rturnq.workers.dev/both/|
+|/group|group.html|group.html|✅|200|https://static-server-test.rturnq.workers.dev/group|
+|/group/|group.html|group.html|✅|➡️|https://static-server-test.rturnq.workers.dev/group|
+|/group.html|group.html|group.html|✅|➡️|https://static-server-test.rturnq.workers.dev/group|
