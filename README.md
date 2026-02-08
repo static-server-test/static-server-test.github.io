@@ -33,3 +33,24 @@ No configuration
 |/group|group.html|group.html|✅|200|http://localhost:3000/group|
 |/group/|group.html|group.html|✅|200|http://localhost:3000/group/|
 |/group.html|group.html|group.html|✅|3xx|http://localhost:3000/group|
+
+
+### GitHub Pages
+
+https://static-server-test.github.io/
+
+|Path|Expected|Actual|Pass|Status|Location|
+|---|---|---|---|---|---|
+|/file|file.html|file.html|✅|200|https://static-server-test.github.io/file|
+|/file/|file.html||❌|404|https://static-server-test.github.io/file/|
+|/file.html|file.html|file.html|✅|200|https://static-server-test.github.io/file.html|
+|/folder|folder/index.html|folder/index.html|✅|3xx|https://static-server-test.github.io/folder/|
+|/folder/|folder/index.html|folder/index.html|✅|200|https://static-server-test.github.io/folder/|
+|/folder/index.html|folder/index.html|folder/index.html|✅|200|https://static-server-test.github.io/folder/index.html|
+|/both|both.html|both.html|✅|200|https://static-server-test.github.io/both|
+|/both/|both/index.html|both/index.html|✅|200|https://static-server-test.github.io/both/|
+|/both.html|both.html|both.html|✅|200|https://static-server-test.github.io/both.html|
+|/both/index.html|both/index.html|both/index.html|✅|200|https://static-server-test.github.io/both/index.html|
+|/group|group.html|group.html|✅|200|https://static-server-test.github.io/group|
+|/group/|group.html||❌|404|https://static-server-test.github.io/group/|
+|/group.html|group.html|group.html|✅|200|https://static-server-test.github.io/group.html|
