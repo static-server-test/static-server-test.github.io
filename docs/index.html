@@ -62,15 +62,15 @@
         for (const { path, expected } of tests) {
           const { location, status, text } = await trace(path);
           const $tr = document.createElement("tr");
-          for (const content of [
-            path,
+          for (const html of [
+            `<a href="${path}">${path}</a>`,
             expected,
             text,
-            expected === text ? "✅" : "❌",
-            status,
+            expected === text ? `<span title="Pass">✅</span>` : `<span title="Fail">❌</span>`,
+            status === 300 ? `<span title="Redirect">➡️<span>` : status,
             location,
           ]) {
-            $tr.appendChild(document.createElement("td")).textContent = content;
+            $tr.appendChild(document.createElement("td")).innerHTML = html;
           }
           $tbody.appendChild($tr);
         }
@@ -111,7 +111,7 @@
           status = res.status;
 
           if (res.type === "opaqueredirect") {
-            status = "3xx";
+            status = 300;
             await new Promise((resolve) => {
               if (!iframe) {
                 iframe = document.createElement("iframe");
