@@ -74,3 +74,23 @@ https://static-server-test.rturnq.workers.dev/
 |/group|group.html|group.html|✅|200|https://static-server-test.rturnq.workers.dev/group|
 |/group/|group.html|group.html|✅|➡️|https://static-server-test.rturnq.workers.dev/group|
 |/group.html|group.html|group.html|✅|➡️|https://static-server-test.rturnq.workers.dev/group|
+
+### Vercel Static
+
+No options https://static-server-test.vercel.app
+
+|Path|Expected|Actual|Pass|Status|Location|
+|---|---|---|---|---|---|
+|/file|file.html||❌|404|https://static-server-test.vercel.app/file|
+|/file/|file.html||❌|404|https://static-server-test.vercel.app/file/|
+|/file.html|file.html|file.html|✅|200|https://static-server-test.vercel.app/file.html|
+|/folder|folder/index.html|folder/index.html|✅|200|https://static-server-test.vercel.app/folder|
+|/folder/|folder/index.html|folder/index.html|✅|200|https://static-server-test.vercel.app/folder/|
+|/folder/index.html|folder/index.html|folder/index.html|✅|200|https://static-server-test.vercel.app/folder/index.html|
+|/both|both.html|both/index.html|❌|200|https://static-server-test.vercel.app/both|
+|/both/|both/index.html|both/index.html|✅|200|https://static-server-test.vercel.app/both/|
+|/both.html|both.html|both.html|✅|200|https://static-server-test.vercel.app/both.html|
+|/both/index.html|both/index.html|both/index.html|✅|200|https://static-server-test.vercel.app/both/index.html|
+|/group|group.html||❌|404|https://static-server-test.vercel.app/group|
+|/group/|group.html||❌|404|https://static-server-test.vercel.app/group/|
+|/group.html|group.html|group.html|✅|200|https://static-server-test.vercel.app/group.html|
